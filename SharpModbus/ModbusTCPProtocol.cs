@@ -1,23 +1,8 @@
-﻿using System;
-
-namespace SharpModbus
+﻿namespace SharpModbus
 {
     public class ModbusTCPProtocol : IModbusProtocol
     {
-        private int transactionId = 0;
-
-        public int TransactionId
-        {
-            get { return transactionId; }
-            set { transactionId = value; }
-        }
-
-        private int NextTid()
-        {
-            var tid = transactionId++;
-            transactionId &= 0xFFFF;
-            return tid;
-        }
+        public int TransactionId { get; set; }
 
         public IModbusWrapper Wrap(IModbusCommand wrapped)
         {
@@ -31,6 +16,13 @@ namespace SharpModbus
                 "RequestLength mismatch got {0} expected {1}");
             var transaction = ModbusHelper.GetUShort(request, offset);
             return new ModbusTCPWrapper(wrapped, transaction);
+        }
+
+        private int NextTid()
+        {
+            var tid = TransactionId++;
+            TransactionId &= 0xFFFF;
+            return tid;
         }
     }
 }

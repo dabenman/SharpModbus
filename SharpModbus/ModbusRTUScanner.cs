@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SharpModbus
 {
     public class ModbusRTUScanner : IModbusScanner
     {
-        private readonly ModbusRTUProtocol protocol = new ModbusRTUProtocol();
         private readonly List<byte> buffer = new List<byte>();
+        private readonly ModbusRTUProtocol protocol = new ModbusRTUProtocol();
 
         public void Append(byte[] data, int offset, int count)
         {
@@ -30,15 +29,16 @@ namespace SharpModbus
                     return protocol.Parse(request, 0);
                 }
             }
+
             return null; //not enough data to parse
         }
 
-        bool HasBytesAt6(byte code)
+        private bool HasBytesAt6(byte code)
         {
             return "15,16".Contains(code.ToString("00"));
         }
 
-        void CheckCode(byte code)
+        private void CheckCode(byte code)
         {
             var valid = "01,02,03,04,05,06,15,16".Contains(code.ToString("00"));
             if (!valid) Thrower.Throw("Unsupported code {0}", code);

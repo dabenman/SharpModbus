@@ -11,7 +11,7 @@ namespace SharpModbus
 
         public ModbusSerialStream(SerialSettings settings, int timeout, Action<char, byte[], int> monitor = null)
         {
-            this.serialDevice = new SerialDevice(settings);
+            serialDevice = new SerialDevice(settings);
             this.timeout = timeout;
             this.monitor = monitor;
         }

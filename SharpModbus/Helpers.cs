@@ -6,8 +6,16 @@ namespace SharpModbus
 {
     public class SerialSettings
     {
-        public SerialSettings() { init(null); }
-        public SerialSettings(string portName) { init(portName); }
+        public SerialSettings()
+        {
+            init(null);
+        }
+
+        public SerialSettings(string portName)
+        {
+            init(portName);
+        }
+
         public string PortName { get; set; }
         public int BaudRate { get; set; }
         public int DataBits { get; set; }
@@ -27,7 +35,7 @@ namespace SharpModbus
         }
     }
 
-    static class Assert
+    internal static class Assert
     {
         public static void Equal(int a, int b, string format)
         {
@@ -63,7 +71,7 @@ namespace SharpModbus
 
         public void Dispose()
         {
-            Disposer.Dispose(payload);
+            Dispose(payload);
         }
 
         public void Clear()
@@ -73,8 +81,13 @@ namespace SharpModbus
 
         public static void Dispose(IDisposable closeable)
         {
-            try { if (closeable != null) closeable.Dispose(); }
-            catch (Exception) { }
+            try
+            {
+                if (closeable != null) closeable.Dispose();
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 

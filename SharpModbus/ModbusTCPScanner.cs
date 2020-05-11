@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SharpModbus
 {
     public class ModbusTCPScanner : IModbusScanner
     {
-        private readonly ModbusTCPProtocol protocol = new ModbusTCPProtocol();
         private readonly List<byte> buffer = new List<byte>();
+        private readonly ModbusTCPProtocol protocol = new ModbusTCPProtocol();
 
         public void Append(byte[] data, int offset, int count)
         {
@@ -25,6 +24,7 @@ namespace SharpModbus
                     return protocol.Parse(request, 0);
                 }
             }
+
             return null; //not enough data to parse
         }
     }

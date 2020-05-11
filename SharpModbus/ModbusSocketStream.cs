@@ -1,13 +1,13 @@
 using System;
-using System.Threading;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace SharpModbus
 {
     public class ModbusSocketStream : IModbusStream
     {
-        private readonly TcpClient socket;
         private readonly Action<char, byte[], int> monitor;
+        private readonly TcpClient socket;
 
         public ModbusSocketStream(TcpClient socket, int timeout, Action<char, byte[], int> monitor = null)
         {
@@ -42,11 +42,12 @@ namespace SharpModbus
                 }
                 else
                 {
-                    var size = (int)Math.Min(available, data.Length - count);
+                    var size = Math.Min(available, data.Length - count);
                     count += socket.GetStream().Read(data, count, size);
                     dl = DateTime.Now; //should come in single packet
                 }
             }
+
             if (monitor != null) monitor('<', data, count);
             return count;
         }

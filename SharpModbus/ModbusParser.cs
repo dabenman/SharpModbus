@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SharpModbus
+﻿namespace SharpModbus
 {
     public static class ModbusParser
     {
@@ -28,6 +26,7 @@ namespace SharpModbus
                 case 16:
                     return Parse16(slave, code, address, request, offset);
             }
+
             throw Thrower.Make("Unsupported function code {0}", code);
         }
 

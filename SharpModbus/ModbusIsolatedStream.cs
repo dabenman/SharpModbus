@@ -11,7 +11,7 @@ namespace SharpModbus
 
         public ModbusIsolatedStream(object settings, int timeout, Action<char, byte[], int> monitor = null)
         {
-            this.serialProcess = new SerialProcess(settings);
+            serialProcess = new SerialProcess(settings);
             this.timeout = timeout;
             this.monitor = monitor;
         }

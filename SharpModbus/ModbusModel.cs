@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SharpModbus
 {
@@ -45,6 +44,7 @@ namespace SharpModbus
                 var key = Key(ModbusIoType.DI, slave, address + i);
                 values[i] = digitals[key];
             }
+
             return values;
         }
 
@@ -77,6 +77,7 @@ namespace SharpModbus
                 var key = Key(ModbusIoType.DO, slave, address + i);
                 values[i] = digitals[key];
             }
+
             return values;
         }
 
@@ -109,6 +110,7 @@ namespace SharpModbus
                 var key = Key(ModbusIoType.WI, slave, address + i);
                 values[i] = words[key];
             }
+
             return values;
         }
 
@@ -141,6 +143,7 @@ namespace SharpModbus
                 var key = Key(ModbusIoType.WO, slave, address + i);
                 values[i] = words[key];
             }
+
             return values;
         }
 

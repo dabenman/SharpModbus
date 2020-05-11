@@ -1,55 +1,52 @@
-﻿using System;
-
-namespace SharpModbus
+﻿namespace SharpModbus
 {
     public class ModbusF04ReadInputRegisters : IModbusCommand
     {
-        private readonly byte slave;
-        private readonly ushort address;
-        private readonly ushort count;
-
-        public byte Code { get { return 4; } }
-        public byte Slave { get { return slave; } }
-        public ushort Address { get { return address; } }
-        public ushort Count { get { return count; } }
-        public int RequestLength { get { return 6; } }
-        public int ResponseLength { get { return 3 + ModbusHelper.BytesForWords(count); } }
-
         public ModbusF04ReadInputRegisters(byte slave, ushort address, ushort count)
         {
-            this.slave = slave;
-            this.address = address;
-            this.count = count;
+            Slave = slave;
+            Address = address;
+            Count = count;
         }
+
+        public ushort Count { get; }
+
+        public byte Code => 4;
+        public byte Slave { get; }
+
+        public ushort Address { get; }
+
+        public int RequestLength => 6;
+        public int ResponseLength => 3 + ModbusHelper.BytesForWords(Count);
 
         public void FillRequest(byte[] request, int offset)
         {
-            request[offset + 0] = slave;
+            request[offset + 0] = Slave;
             request[offset + 1] = 4;
-            request[offset + 2] = ModbusHelper.High(address);
-            request[offset + 3] = ModbusHelper.Low(address);
-            request[offset + 4] = ModbusHelper.High(count);
-            request[offset + 5] = ModbusHelper.Low(count);
+            request[offset + 2] = ModbusHelper.High(Address);
+            request[offset + 3] = ModbusHelper.Low(Address);
+            request[offset + 4] = ModbusHelper.High(Count);
+            request[offset + 5] = ModbusHelper.Low(Count);
         }
 
         public object ParseResponse(byte[] response, int offset)
         {
-            var bytes = ModbusHelper.BytesForWords(count);
-            Assert.Equal(response[offset + 0], slave, "Slave mismatch got {0} expected {1}");
+            var bytes = ModbusHelper.BytesForWords(Count);
+            Assert.Equal(response[offset + 0], Slave, "Slave mismatch got {0} expected {1}");
             Assert.Equal(response[offset + 1], 4, "Function mismatch got {0} expected {1}");
             Assert.Equal(response[offset + 2], bytes, "Bytes mismatch got {0} expected {1}");
-            return ModbusHelper.DecodeWords(response, offset + 3, count);
+            return ModbusHelper.DecodeWords(response, offset + 3, Count);
         }
 
         public object ApplyTo(IModbusModel model)
         {
-            return model.getWIs(slave, address, count);
+            return model.getWIs(Slave, Address, Count);
         }
 
         public void FillResponse(byte[] response, int offset, object value)
         {
-            var bytes = ModbusHelper.BytesForWords(count);
-            response[offset + 0] = slave;
+            var bytes = ModbusHelper.BytesForWords(Count);
+            response[offset + 0] = Slave;
             response[offset + 1] = 4;
             response[offset + 2] = bytes;
             var data = ModbusHelper.EncodeWords(value as ushort[]);
@@ -58,7 +55,8 @@ namespace SharpModbus
 
         public override string ToString()
         {
-            return string.Format("[ModbusF04ReadInputRegisters Slave={0}, Address={1}, Count={2}]", slave, address, count);
+            return string.Format("[ModbusF04ReadInputRegisters Slave={0}, Address={1}, Count={2}]", Slave, Address,
+                Count);
         }
     }
 }

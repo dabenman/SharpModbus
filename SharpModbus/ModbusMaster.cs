@@ -4,6 +4,20 @@ namespace SharpModbus
 {
     public class ModbusMaster : IDisposable
     {
+        private readonly IModbusProtocol protocol;
+        private readonly IModbusStream stream;
+
+        public ModbusMaster(IModbusStream stream, IModbusProtocol protocol)
+        {
+            this.stream = stream;
+            this.protocol = protocol;
+        }
+
+        public void Dispose()
+        {
+            Disposer.Dispose(stream);
+        }
+
         public static ModbusMaster RTU(SerialSettings settings, int timeout = 400)
         {
             var stream = new ModbusSerialStream(settings, timeout);
@@ -24,20 +38,6 @@ namespace SharpModbus
             var stream = new ModbusSocketStream(socket, timeout);
             var protocol = new ModbusTCPProtocol();
             return new ModbusMaster(stream, protocol);
-        }
-
-        private readonly IModbusProtocol protocol;
-        private readonly IModbusStream stream;
-
-        public ModbusMaster(IModbusStream stream, IModbusProtocol protocol)
-        {
-            this.stream = stream;
-            this.protocol = protocol;
-        }
-
-        public void Dispose()
-        {
-            Disposer.Dispose(stream);
         }
 
         public bool ReadCoil(byte slave, ushort address)

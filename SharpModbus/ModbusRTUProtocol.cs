@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SharpModbus
+﻿namespace SharpModbus
 {
     public class ModbusRTUProtocol : IModbusProtocol
     {
@@ -14,7 +12,7 @@ namespace SharpModbus
             var wrapped = ModbusParser.Parse(request, offset);
             var crc = ModbusHelper.CRC16(request, offset, wrapped.RequestLength);
             Assert.Equal(crc, ModbusHelper.GetUShortLittleEndian(request, offset + wrapped.RequestLength),
-                         "CRC mismatch {0:X4} expected {1:X4}");
+                "CRC mismatch {0:X4} expected {1:X4}");
             return new ModbusRTUWrapper(wrapped);
         }
     }

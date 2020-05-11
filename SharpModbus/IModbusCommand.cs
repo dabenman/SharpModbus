@@ -1,7 +1,4 @@
-﻿
-using System;
-
-namespace SharpModbus
+﻿namespace SharpModbus
 {
     public interface IModbusCommand
     {

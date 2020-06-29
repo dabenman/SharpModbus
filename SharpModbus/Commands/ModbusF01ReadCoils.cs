@@ -4,9 +4,9 @@
     {
         public ModbusF01ReadCoils(byte slave, ushort address, ushort count)
         {
-            Slave = slave;
-            Address = address;
-            Count = count;
+            this.Slave = slave;
+            this.Address = address;
+            this.Count = count;
         }
 
         public ushort Count { get; }
